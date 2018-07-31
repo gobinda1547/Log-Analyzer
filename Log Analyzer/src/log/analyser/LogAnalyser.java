@@ -303,6 +303,7 @@ public class LogAnalyser extends JFrame {
 					JOptionPane.showMessageDialog(null, "ENTER VALID RULE TYPE!");
 					return;
 				}
+				ruleName = ruleName.replaceAll(" ", "_");
 				String outputMessage = "Can not ADD this type";
 
 				if (Database.createTable(ruleName)) {
