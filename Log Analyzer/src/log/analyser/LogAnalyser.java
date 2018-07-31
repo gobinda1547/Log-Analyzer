@@ -257,7 +257,7 @@ public class LogAnalyser extends JFrame {
 
 		JPanel subRulesSettingsPanel1 = new JPanel();
 		rulesSettingsPanel.add(subRulesSettingsPanel1, BorderLayout.NORTH);
-		subRulesSettingsPanel1.setLayout(new GridLayout(0, 4, 0, 0));
+		subRulesSettingsPanel1.setLayout(new GridLayout(0, 5, 0, 0));
 
 		comboBoxForType = new JComboBox<String>();
 		comboBoxForType.addItemListener(new ItemListener() {
@@ -316,6 +316,55 @@ public class LogAnalyser extends JFrame {
 			}
 		});
 		subRulesSettingsPanel1.add(buttonForTypeADD);
+
+		JButton buttonForTypeCopy = new JButton("Copy Rules");
+		buttonForTypeCopy.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				String selectedTableName = (String) comboBoxForType.getSelectedItem();
+				if (selectedTableName == null || selectedTableName.length() == 0) {
+					JOptionPane.showMessageDialog(null, "No Rule is Available!");
+					return;
+				}
+
+				String toTableName = textFieldForTypeADD.getText();
+				if (toTableName == null || toTableName.length() == 0) {
+					JOptionPane.showMessageDialog(null, "Enter New table name!");
+					return;
+				}
+				toTableName = toTableName.replaceAll(" ", "_");
+
+				ArrayList<String> preTable = Database.selectAllTheTableName();
+				for (String s : preTable) {
+					if (toTableName.equals(s)) {
+						JOptionPane.showMessageDialog(null, "This Name already Exist");
+						return;
+					}
+				}
+				if (Database.createTable(toTableName) == false) {
+					JOptionPane.showMessageDialog(null, "Can not create new table!");
+					return;
+				}
+
+				ArrayList<LogRules> logRules = Database.selectAllTheTableData(selectedTableName);
+				if (logRules == null || logRules.size() == 0) {
+					JOptionPane.showMessageDialog(null, "Table created but there is no rule.");
+					return;
+				}
+
+				for (LogRules logRule : logRules) {
+					Database.insertTableData(toTableName, logRule);
+				}
+
+				JOptionPane.showMessageDialog(null, "Table copied as the new Name!");
+				textFieldForTypeADD.setText("");
+				
+				refreshTypeComboBox();
+				refreshRulesTable();
+			}
+		});
+		subRulesSettingsPanel1.add(buttonForTypeCopy);
 
 		JPanel subRulesSettingsPanel2 = new JPanel();
 		rulesSettingsPanel.add(subRulesSettingsPanel2, BorderLayout.CENTER);
