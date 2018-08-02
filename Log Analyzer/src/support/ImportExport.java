@@ -65,10 +65,7 @@ public class ImportExport {
 	public static Connection getDatabaseConnection(File file) {
 
 		try {
-			System.out.println(file.exists());
-			System.out.println(file.getParent());
 			String dbUrl = "jdbc:h2:" + file.getParent() + File.separator + DB_NAME;
-			System.out.println(file.getParent());
 			String dbUserName = "";
 			String dbPassword = "";
 			Class.forName("org.h2.Driver");
