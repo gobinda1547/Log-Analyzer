@@ -350,6 +350,8 @@ public class LogAnalyser extends JFrame {
 				ArrayList<LogRules> logRules = Database.selectAllTheTableData(selectedTableName);
 				if (logRules == null || logRules.size() == 0) {
 					JOptionPane.showMessageDialog(null, "Table created but there is no rule.");
+					refreshTypeComboBox();
+					refreshRulesTable();
 					return;
 				}
 
