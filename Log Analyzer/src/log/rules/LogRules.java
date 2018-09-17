@@ -25,7 +25,7 @@ public class LogRules {
 	}
 
 	public void setRuleText(String ruleText) {
-		this.ruleText = ruleText;
+		this.ruleText = ruleText.trim();
 	}
 
 	public String getPrintLast() {

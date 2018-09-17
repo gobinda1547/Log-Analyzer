@@ -83,13 +83,24 @@ public class LogManager {
 
 					if (currentLogLine.contains(currentLogRule.getRuleText())) {
 						sb.append(currentLogLine + NEW_LINE);
-						for (int k = 1; k < currentLogRule.getLineCount(); k++) {
-							sb.append(logManager.allLogs.get(i + k) + NEW_LINE);
+						for (int k = 1; k <= currentLogRule.getLineCount(); k++) {
 							++i;
+							sb.append(logManager.allLogs.get(i) + NEW_LINE);
 						}
 
-						if (currentLogRule.getPrintLast().equals("n")) {
-							sb.append(NEW_LINE);
+						int totalNewLine = 0;
+						for (int m = 0; m < currentLogRule.getPrintLast().length(); m++) {
+							if (currentLogRule.getPrintLast().charAt(m) == 'n') {
+								totalNewLine++;
+							} else {
+								break;
+							}
+						}
+
+						if (totalNewLine == currentLogRule.getPrintLast().length()) {
+							for (int m = 0; m < totalNewLine; m++) {
+								sb.append(NEW_LINE);
+							}
 						} else {
 							sb.append(currentLogRule.getPrintLast());
 						}
@@ -99,6 +110,7 @@ public class LogManager {
 				}
 
 			}
+			
 			LogAnalyser.showMessageInConsolePanel("Rules Applying Completed!\n", false);
 			LogAnalyser.showMessageInMainPanel(sb.toString(), true);
 		}
